@@ -4,3 +4,14 @@ h1{
 .ant-layout-sider-children {
     position: fixed;
   }
+  main{
+      margin:0;
+  }
+.ant-breadcrumb{
+    background: #001529;
+    height: 50px;
+    position: fixed;
+    width: 100%;
+    line-height: 50px;
+    color:#fff;
+}
