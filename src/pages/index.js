@@ -1,84 +1,75 @@
 import styles from './index.css';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
-export default function() {
+import { Form, Icon, Input, Button, Checkbox, message, Spin } from 'antd';
+// import {connect} from 'dva';
+import * as api from '../until/getpro';
+
+export default function (props) {
+  let value1 = '';
+  let value2 = '';
+  document.onkeydown = function () {
+    //回车键的键值为 13
+    if (event.keyCode == 13) {
+      api.getLogin({ userName: value1.state.value, password: value2.state.value })
+        .then((data) => {
+          console.log(data)
+          if (data.data.code == "success") {
+            localStorage.setItem('token', data.data.token)
+            message.success('登录成功,即将进入');
+            setTimeout(function () {
+              props.history.push('./userquery/test')
+            }, 1000)
+          } else {
+            message.error('用户名或密码错误，请重新输入！');
+          }
+        }).catch((err) => {
+          message.error('用户名或密码错误，请重新输入！');
+        })
+    }
+  }
   return (
-    <div className={styles.normal}>
-      <div className={styles.cont}>
-        <Form  className="login-form">
-          <h1>地标商城后台管理系统</h1>
-          <Input
-          className={styles.wbk}
-          placeholder="请输入用户名"
-          prefix={<Icon type="user" style={{ color:'rgba(0,0,0,.25)'}} />}
-          />
-          <br/>
-          <br/>
-          <Input.Password 
-            className={styles.wbk}
-            placeholder="请输入密码"
-            prefix={<Icon type="unlock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-          />
-          <br/>
-          <br/>
-          <Button type="primary"href="/user" block>登录</Button>
-        </Form>
+    <div className={styles.normal2}>
+      <div className={styles.normal}>
+        <div className={styles.cont}>
+          <Form className="login-form">
+            <h3 style={{ position: "relative", left: "0px", top: "-10px", fontSize: "30px" }}>地标商城后台管理系统</h3>
+            <Input
+              className={styles.wbk}
+              placeholder="请输入用户名"
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              ref={(val) => value1 = val}
+            />
+            <br />
+            <br />
+            <Input type="Password"
+              className={styles.wbk}
+              placeholder="请输入密码"
+              prefix={<Icon type="unlock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              ref={(val) => value2 = val}
+            />
+            <br />
+            <br />
+            <Button type="primary" onClick={() => {
+              api.getLogin({ userName: value1.state.value, password: value2.state.value })
+                .then((data) => {
+                  console.log(data)
+                  if (data.data.code == "success") {
+                    localStorage.setItem('token', data.data.token)
+                    message.success('登录成功,即将进入');
+                    setTimeout(function () {
+                      props.history.push('./userquery/test')
+                    }, 1000)
+                  } else {
+                    message.error('用户名或密码错误，请重新输入！');
+                  }
+                }).catch((err) => {
+                  message.error('用户名或密码错误，请重新输入！');
+                })
+            }} block>登录</Button>
+          </Form>
+        </div>
       </div>
     </div>
   );
 }
-/* class NormalLoginForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-  };
 
-  render() {
-    // const {getFieldDecorator} = this.props.form;
-    return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {getFieldDecorator('username', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Username"
-            />,
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input
-              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              type="password"
-              placeholder="Password"
-            />,
-          )}
-        </Form.Item>
-        <Form.Item>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(<Checkbox>Remember me</Checkbox>)}
-          <a className="login-form-forgot" href="">
-            Forgot password
-          </a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
-          Or <a href="">register now!</a>
-        </Form.Item>
-      </Form>
-    );
-  }
-}
-
-const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(NormalLoginForm);
-ReactDOM.render(<WrappedNormalLoginForm />, mountNode)
-export default NormalLoginForm; */
+//  connect(state=>state.info)(Index)

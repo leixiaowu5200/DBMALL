@@ -10,4 +10,10 @@
 .touxiang{
  position:fixed;
  left:90%;
+ cursor: pointer;
+ z-index: 2;
+ user-select: none;
+}
+.bxs{
+  cursor: pointer;
 }
