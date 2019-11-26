@@ -22,7 +22,7 @@ const routes = [
       React.createElement(
         require('C:/Users/Administrator/AppData/Roaming/npm/node_modules/umi/node_modules/umi-build-dev/lib/plugins/404/NotFound.js')
           .default,
-        { pagesPath: 'pages', hasRoutesInConfig: false },
+        { pagesPath: 'src/pages', hasRoutesInConfig: false },
       ),
   },
 ];
